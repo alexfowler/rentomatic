@@ -22,6 +22,7 @@ docker-compose = "*"
 PyYAML = "*"
 SQLAlchemy-Utils = "*"
 psycopg2-binary = "*"
+pymongo = "*"
 
 [requires]
 python_version = "3.7"

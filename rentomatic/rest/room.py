@@ -3,7 +3,8 @@ import json
 from flask import Blueprint, Response, request
 
 from rentomatic.repository import memrepo as mr
-from rentomatic.repository import postgresrepo as pr
+# from rentomatic.repository import postgresrepo as pr
+from rentomatic.repository import mongorepo as mr
 from rentomatic.use_cases import room_list_use_case as uc
 from rentomatic.serializers import room_json_serializer as ser
 from rentomatic.request_objects import room_list_request_object as req
@@ -18,12 +19,6 @@ STATUS_CODES = {
     res.ResponseFailure.SYSTEM_ERROR: 500
 }
 
-connection_data = {
-    'dbname': 'rentomaticdb',
-    'user': 'postgres',
-    'password': 'rentomaticdb',
-    'host': 'localhost'
-}
 
 # room1 = {
 #     'code': 'f853578c-fc0f-4e65-81b8-566c5dffa35a',
@@ -49,6 +44,20 @@ connection_data = {
 #     'latitude': 51.45994069,
 # }
 
+# connection_data = {
+#     'dbname': 'rentomaticdb',
+#     'user': 'postgres',
+#     'password': 'rentomaticdb',
+#     'host': 'localhost'
+# }
+
+connection_data = {
+    'dbname': 'rentomaticdb',
+    'username': 'root',
+    'password': 'rentomaticdb',
+    'host': 'localhost'
+}
+
 
 @blueprint.route('/rooms', methods=['GET'])
 def room():
@@ -64,7 +73,8 @@ def room():
     request_object = req.RoomListRequestObject.from_dict(qrystr_params)
 
     # repo = mr.MemRepo([room1, room2, room3])
-    repo = pr.PostgresRepo(connection_data)
+    # repo = pr.PostgresRepo(connection_data)
+    repo = mr.MongoRepo(connection_data)
     use_case = uc.RoomListUseCase(repo)
 
     response = use_case.execute(request_object)

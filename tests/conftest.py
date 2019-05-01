@@ -31,6 +31,12 @@ def docker_setup(docker_ip):
             'user': 'postgres',
             'password': 'rentomaticdb',
             'host': docker_ip
+        },
+        'mongo': {
+            'dbname': 'rentomaticdb',
+            'username': 'root',
+            'password': 'rentomaticdb',
+            'host': docker_ip
         }
     }
 
@@ -54,6 +60,19 @@ def docker_compose_file(docker_tmpfile, docker_setup):
                 'environment': [
                     'POSTGRES_PASSWORD={}'.format(
                         docker_setup['postgres']['password']
+                    )
+                ]
+            },
+            'mongo': {
+                'restart': 'always',
+                'image': 'mongo',
+                'ports': ["27017:27017"],
+                'environment': [
+                    'MONGO_INITDB_ROOT_USERNAME={}'.format(
+                        docker_setup['mongo']['username']
+                    ),
+                    'MONGO_INITDB_ROOT_PASSWORD={}'.format(
+                        docker_setup['mongo']['password']
                     )
                 ]
             }

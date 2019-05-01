@@ -8,4 +8,5 @@ pytest-docker
 docker-compose
 pyyaml
 psycopg2-binary
+pymongo
 sqlalchemy_utils
